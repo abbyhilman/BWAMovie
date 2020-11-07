@@ -27,6 +27,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import kotlinx.android.synthetic.main.activity_sign_up_photoscreen.*
 import java.util.*
 
 class SignUpPhotoscreenActivity : AppCompatActivity(), PermissionListener {
@@ -45,8 +46,8 @@ class SignUpPhotoscreenActivity : AppCompatActivity(), PermissionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_photoscreen)
 
-        var btn_simpan = findViewById<Button>(R.id.btn_simpan)
-        var btn_home = findViewById<Button>(R.id.btn_simpan)
+        //var btn_simpan = findViewById<Button>(R.id.btn)
+        //var btn_home = findViewById<Button>(R.id.btn_simpan)
         var iv_profile = findViewById<ImageView>(R.id.iv_profile)
         var iv_add = findViewById<ImageView>(R.id.iv_add)
         var iv_hello = findViewById<TextView>(R.id.iv_hello)

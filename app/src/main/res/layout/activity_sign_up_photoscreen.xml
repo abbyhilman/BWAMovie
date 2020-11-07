@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ColorBlue"
-    tools:context=".OnBoarding.OnboardingOneActivity">
+    tools:context=".sign.signup.SignUpPhotoscreenActivity">
 
     <Button
-        android:id="@+id/btn_simpan"
+        android:id="@+id/btn_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,6 +21,7 @@
         app:backgroundTint="@color/colorBlueGrey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -36,7 +37,7 @@
         android:textColor="@color/colorWhite"
         android:visibility="invisible"
         app:backgroundTint="@color/colorPink"
-        app:layout_constraintBottom_toTopOf="@+id/btn_simpan"
+        app:layout_constraintBottom_toTopOf="@+id/btn_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -87,8 +88,10 @@
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
         app:srcCompat="@drawable/user_pic" />
 
     <ImageView

@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.byhil.bwamovie.R
 import com.byhil.bwamovie.home.HomeActivity
+import com.byhil.bwamovie.home.tiket.TiketActivity
 import com.byhil.bwamovie.model.Checkout
 import com.byhil.bwamovie.utils.Preferences
 import kotlinx.android.synthetic.main.activity_checkout.*
@@ -31,16 +32,18 @@ class CheckoutActivity : AppCompatActivity() {
 
         rc_checkout.layoutManager = LinearLayoutManager(this)
         rc_checkout.adapter = CheckoutAdapter(dataList) {
+            finishAffinity()
 
-
-        }
-
-        btn_simpan.setOnClickListener {
-            var intent = Intent(this, CheckoutSuccessActivity::class.java)
+            var intent = Intent(this, TiketActivity::class.java).putExtra("data", dataList)
             startActivity(intent)
         }
 
-        btn_home.setOnClickListener {
+        btn_simpan.setOnClickListener {
+            var intent = Intent(this, CheckoutSuccessActivity::class.java).putExtra("data", dataList)
+            startActivity(intent)
+        }
+
+        btn_simpan.setOnClickListener {
             var intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
