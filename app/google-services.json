@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "705540074644",
+    "firebase_url": "https://bwabyhil.firebaseio.com",
+    "project_id": "bwabyhil",
+    "storage_bucket": "bwabyhil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705540074644:android:a63a361945f56fc6799881",
+        "android_client_info": {
+          "package_name": "com.byhil.bwamovie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705540074644-2iq15emf734bfr3h5ojengqg881d48ul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQq2hO2e0945cDbeWy0j2PWjeeBJraq3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705540074644-2iq15emf734bfr3h5ojengqg881d48ul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
