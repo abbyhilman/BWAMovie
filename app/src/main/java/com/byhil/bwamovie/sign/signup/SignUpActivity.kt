@@ -3,12 +3,12 @@ package com.byhil.bwamovie.sign.signup
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import com.byhil.bwamovie.R
 import com.byhil.bwamovie.sign.signin.User
+import com.byhil.bwamovie.utils.Preferences
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var sUsername: String
@@ -20,18 +20,17 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var mFirebaseInstance: FirebaseDatabase
     lateinit var mDatabase: DatabaseReference
 
+    private lateinit var preferences: Preferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        var btn_lanjutkan = findViewById<Button>(R.id.btn_lanjutkan)
-        var et_username = findViewById<EditText>(R.id.et_username)
-        var et_password = findViewById<EditText>(R.id.et_password)
-        var et_nama = findViewById<EditText>(R.id.et_nama)
-        var et_email = findViewById<EditText>(R.id.et_email)
 
         mFirebaseInstance = FirebaseDatabase.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference()
         mDatabaseReference = mFirebaseInstance.getReference("User")
+
+        preferences = Preferences(this)
 
         btn_lanjutkan.setOnClickListener {
             sUsername = et_username.text.toString()
@@ -70,26 +69,33 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-    private fun checkingUsername(sUsername: String, data: User) {
-        mDatabaseReference.child(sUsername).addValueEventListener(object : ValueEventListener{
+    private fun checkingUsername(iUsername: String, data: User) {
+        mDatabaseReference.child(iUsername).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var user = dataSnapshot.getValue(User::class.java)
-                if (user == null) {
-                    mDatabaseReference.child(sUsername).setValue(data)
 
-                    var goSigUpPhotoscreen = Intent(this@SignUpActivity,
+                val user = dataSnapshot.getValue(User::class.java)
+                if (user == null) {
+                    mDatabaseReference.child(iUsername).setValue(data)
+
+                    preferences.setValues("nama", data.nama.toString())
+                    preferences.setValues("user", data.username.toString())
+                    preferences.setValues("url", "")
+                    preferences.setValues("email", data.email.toString())
+                    preferences.setValues("status", "1")
+
+                    val intent = Intent(this@SignUpActivity,
                         SignUpPhotoscreenActivity::class.java).putExtra("nama", data.nama)
-                    startActivity(goSigUpPhotoscreen)
+                    startActivity(intent)
 
                 } else {
                     Toast.makeText(this@SignUpActivity, "User sudah digunakan", Toast.LENGTH_LONG).show()
+
                 }
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@SignUpActivity, ""+databaseError.message, Toast.LENGTH_LONG).show()
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@SignUpActivity, ""+error.message, Toast.LENGTH_LONG).show()
             }
-
         })
     }
 }

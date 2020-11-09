@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.webkit.PermissionRequest
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,20 +20,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.byhil.bwamovie.home.HomeActivity
 import com.byhil.bwamovie.R
 import com.byhil.bwamovie.utils.Preferences
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_sign_up_photoscreen.*
 import java.util.*
 
-class SignUpPhotoscreenActivity : AppCompatActivity(), PermissionListener {
+class SignUpPhotoscreenActivity : AppCompatActivity() {
 
-    val REQUEST_IMAGE_CAPTURE = 1
+    //val REQUEST_IMAGE_CAPTURE = 1
     var statusAdd:Boolean = false
     lateinit var filePath: Uri
 
@@ -45,12 +41,6 @@ class SignUpPhotoscreenActivity : AppCompatActivity(), PermissionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_photoscreen)
-
-        //var btn_simpan = findViewById<Button>(R.id.btn)
-        //var btn_home = findViewById<Button>(R.id.btn_simpan)
-        var iv_profile = findViewById<ImageView>(R.id.iv_profile)
-        var iv_add = findViewById<ImageView>(R.id.iv_add)
-        var iv_hello = findViewById<TextView>(R.id.iv_hello)
 
         preferences = Preferences(this)
         storage = FirebaseStorage.getInstance()
@@ -65,10 +55,13 @@ class SignUpPhotoscreenActivity : AppCompatActivity(), PermissionListener {
                 iv_add.setImageResource(R.drawable.ic_btn_upload)
                 iv_profile.setImageResource(R.drawable.user_pic)
             } else {
-                Dexter.withActivity(this)
-                    .withPermission(Manifest.permission.CAMERA)
-                    .withListener(this)
-                    .check()
+//                Dexter.withActivity(this)
+//                    .withPermission(Manifest.permission.CAMERA)
+//                    .withListener(this)
+//                    .check()
+                ImagePicker.with(this)
+                        .cameraOnly()
+                        .start()
             }
         }
 
@@ -114,45 +107,65 @@ class SignUpPhotoscreenActivity : AppCompatActivity(), PermissionListener {
         }
     }
 
-    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {
-            takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
-        }
-    }
-
-    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-        Toast.makeText(this, "Anda Tidak bisa menambahkan photo Profile", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, p1: PermissionToken?) {
-
-    }
+//    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+////        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {
+////            takePictureIntent ->
+////            takePictureIntent.resolveActivity(packageManager)?.also {
+////                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+////            }
+////        }
+//        ImagePicker.with(this)
+//                .cameraOnly()
+//                .start()
+//    }
+//
+//    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+//        Toast.makeText(this, "Anda Tidak bisa menambahkan photo Profile", Toast.LENGTH_LONG).show()
+//    }
+//
+//    override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, p1: PermissionToken?) {
+//
+//    }
 
     override fun onBackPressed() {
         super.onBackPressed()
         Toast.makeText(this, "Tergesah? klik tombol uploadnya nanti aja", Toast.LENGTH_LONG).show()
     }
 
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+//            var bitmap = data?.extras?.get("data") as Bitmap
+//            statusAdd = true
+//
+//            filePath = data.getData()!!
+//            Glide.with(this)
+//                .load(bitmap)
+//                .apply(RequestOptions.circleCropTransform())
+//                .into(iv_profile)
+//
+//            btn_simpan.visibility = View.VISIBLE
+//            iv_add.setImageResource(R.drawable.ic_btn_delete)
+//        }
+//    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        var btn_simpan = findViewById<Button>(R.id.btn_simpan)
-        var iv_profile = findViewById<ImageView>(R.id.iv_profile)
-        var iv_add = findViewById<ImageView>(R.id.iv_add)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            var bitmap = data?.extras?.get("data") as Bitmap
-            statusAdd = true
+        if (resultCode == Activity.RESULT_OK) {
 
-            filePath = data.getData()!!
+            statusAdd = true
+            filePath = data?.data!!
             Glide.with(this)
-                .load(bitmap)
-                .apply(RequestOptions.circleCropTransform())
-                .into(iv_profile)
+                    .load(filePath)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(iv_profile)
 
             btn_simpan.visibility = View.VISIBLE
             iv_add.setImageResource(R.drawable.ic_btn_delete)
+        } else if (resultCode == ImagePicker.RESULT_ERROR){
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_LONG).show()
         }
     }
 }

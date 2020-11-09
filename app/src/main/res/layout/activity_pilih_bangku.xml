@@ -27,14 +27,14 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
         <ImageView
             android:id="@+id/c2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
         <TextView
             android:layout_width="0dp"
@@ -53,14 +53,14 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
         <ImageView
             android:id="@+id/c4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
     </LinearLayout>
 
@@ -83,14 +83,14 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
         <ImageView
             android:id="@+id/d2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
         <TextView
             android:layout_width="0dp"
@@ -109,14 +109,14 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
         <ImageView
             android:id="@+id/d4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_rectangle_20" />
+            android:src="@drawable/ic_rectangle_21" />
 
     </LinearLayout>
 

@@ -39,7 +39,12 @@ class TiketAdapter(private var data: List<Checkout>,
 
         fun bindItem(data:Checkout, listener: (Checkout) -> Unit, context: Context) {
 
-            tvTitle.setText("Seat No."+data.kursi)
+            if (data.kursi!!.startsWith("Total")) {
+                tvTitle.setText(data.kursi)
+                tvTitle.setCompoundDrawables(null,null,null,null)
+            } else {
+                tvTitle.setText("Seat no"+data.kursi)
+            }
 
 
             itemView.setOnClickListener {

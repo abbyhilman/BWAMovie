@@ -20,14 +20,6 @@ class PilihBangkuActivity : AppCompatActivity() {
     var statusB2:Boolean = false
     var statusB3:Boolean = false
     var statusB4:Boolean = false
-    var statusC1:Boolean = false
-    var statusC2:Boolean = false
-    var statusC3:Boolean = false
-    var statusC4:Boolean = false
-    var statusD1:Boolean = false
-    var statusD2:Boolean = false
-    var statusD3:Boolean = false
-    var statusD4:Boolean = false
     var total:Int = 0
 
     private  var dataList = ArrayList<Checkout>()
@@ -176,7 +168,7 @@ class PilihBangkuActivity : AppCompatActivity() {
         }
 
         btn_simpan.setOnClickListener {
-            var intent = Intent(this, CheckoutActivity::class.java).putExtra("data", dataList)
+            var intent = Intent(this, CheckoutActivity::class.java).putExtra("data", dataList).putExtra("datas", data)
             startActivity(intent)
         }
     }

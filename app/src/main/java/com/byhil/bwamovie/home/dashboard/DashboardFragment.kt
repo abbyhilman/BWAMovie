@@ -2,6 +2,7 @@ package com.byhil.bwamovie.home.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,21 +51,16 @@ class DashboardFragment : Fragment() {
         mDatabase = FirebaseDatabase.getInstance().getReference("Film")
 
         tv_nama.setText(preferences.getValues("nama"))
-        val localID = Locale("in", "ID")
-        val formatRupiah = NumberFormat.getCurrencyInstance(localID)
-        tv_saldo.setText(formatRupiah.format(preferences.getValues("saldo")!!.toDouble()))
-//        if (preferences.getValues("saldo").equals("")){
-//            val localID = Locale("in", "ID")
-//            val formatRupiah = NumberFormat.getCurrencyInstance(localID)
-//            tv_saldo.setText(formatRupiah.format(preferences.getValues("saldo")!!.toDouble()))
-//            //currency(preferences.getValues("saldo")!!.toDouble(), tv_saldo)
-//
-//        }
+        if (!preferences.getValues("saldo").equals("")){
+            currecy(preferences.getValues("saldo")!!.toDouble(), tv_saldo)
+        }
 
         Glide.with(this)
             .load(preferences.getValues("url"))
             .apply(RequestOptions.circleCropTransform())
             .into(iv_profile)
+
+        Log.v("tamvan", "url "+preferences.getValues("url"))
 
         rv_now_playing.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_coming_soon.layoutManager = LinearLayoutManager(context)
@@ -100,10 +96,11 @@ class DashboardFragment : Fragment() {
         })
     }
 
-    private fun currency(harga : Double, textView: TextView){
-        val localID = Locale("in", "ID")
-        val formatRupiah = NumberFormat.getCurrencyInstance(localID)
-        textView.setText(formatRupiah.format(harga!!))
+    private fun currecy(harga:Double, textView: TextView) {
+        val localeID = Locale("in", "ID")
+        val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
+        textView.setText(formatRupiah.format(harga as Double))
+
     }
 
 }
