@@ -19,8 +19,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.byhil.bwamovie.home.HomeActivity
 import com.byhil.bwamovie.R
+import com.byhil.bwamovie.sign.signin.User
 import com.byhil.bwamovie.utils.Preferences
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_sign_up_photoscreen.*
@@ -36,6 +38,9 @@ class SignUpPhotoscreenActivity : AppCompatActivity() {
     lateinit var storageRefensi : StorageReference
     lateinit var preferences: Preferences
 
+    lateinit var user : User
+    private lateinit var mFirebaseDatabase: DatabaseReference
+    private lateinit var mFirebaseInstance: FirebaseDatabase
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +51,11 @@ class SignUpPhotoscreenActivity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         storageRefensi = storage.getReference()
 
-        iv_hello.text = "Selamat Datang\n"+intent.getStringExtra("nama")
+        mFirebaseInstance = FirebaseDatabase.getInstance()
+        mFirebaseDatabase = mFirebaseInstance.getReference("User")
+
+        user = intent.getParcelableExtra("data")!!
+        iv_hello.text = "Selamat Datang\n"+user.nama
 
         iv_add.setOnClickListener {
             if (statusAdd) {
@@ -68,7 +77,8 @@ class SignUpPhotoscreenActivity : AppCompatActivity() {
         btn_home.setOnClickListener {
             finishAffinity()
 
-            var goHome = Intent(this@SignUpPhotoscreenActivity, HomeActivity::class.java)
+            var goHome = Intent(this@SignUpPhotoscreenActivity,
+                    HomeActivity::class.java)
             startActivity(goHome)
         }
 
@@ -82,15 +92,10 @@ class SignUpPhotoscreenActivity : AppCompatActivity() {
                 ref.putFile(filePath)
                     .addOnSuccessListener {
                         progressDialog.dismiss()
-                        Toast.makeText(this,"Uploaded", Toast.LENGTH_LONG).show()
-
+                        Toast.makeText(this@SignUpPhotoscreenActivity, "Uploaded", Toast.LENGTH_SHORT).show()
                         ref.downloadUrl.addOnSuccessListener {
-                            preferences.setValues("url", it.toString())
+                            saveToFirebase(it.toString())
                         }
-
-                        finishAffinity()
-                        var goHome = Intent(this@SignUpPhotoscreenActivity, HomeActivity::class.java)
-                        startActivity(goHome)
                     }
                     .addOnFailureListener {
                         progressDialog.dismiss()
@@ -107,47 +112,43 @@ class SignUpPhotoscreenActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-////        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {
-////            takePictureIntent ->
-////            takePictureIntent.resolveActivity(packageManager)?.also {
-////                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-////            }
-////        }
-//        ImagePicker.with(this)
-//                .cameraOnly()
-//                .start()
-//    }
-//
-//    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-//        Toast.makeText(this, "Anda Tidak bisa menambahkan photo Profile", Toast.LENGTH_LONG).show()
-//    }
-//
-//    override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, p1: PermissionToken?) {
-//
-//    }
+    private fun saveToFirebase(url: String) {
+
+        mFirebaseDatabase.child(user.username!!).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                user.url = url
+                mFirebaseDatabase.child(user.username!!).setValue(user)
+
+                preferences.setValues("nama", user.nama.toString())
+                preferences.setValues("user", user.username.toString())
+                preferences.setValues("pass", user.password.toString())
+                preferences.setValues("saldo", "")
+                preferences.setValues("url", "")
+                preferences.setValues("email", user.email.toString())
+                preferences.setValues("status", "1")
+                preferences.setValues("url", url)
+
+                finishAffinity()
+                val intent = Intent(this@SignUpPhotoscreenActivity,
+                        HomeActivity::class.java).putExtra("data", user)
+                startActivity(intent)
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@SignUpPhotoscreenActivity, ""+error.message, Toast.LENGTH_LONG).show()
+            }
+        })
+
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
         Toast.makeText(this, "Tergesah? klik tombol uploadnya nanti aja", Toast.LENGTH_LONG).show()
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-//            var bitmap = data?.extras?.get("data") as Bitmap
-//            statusAdd = true
-//
-//            filePath = data.getData()!!
-//            Glide.with(this)
-//                .load(bitmap)
-//                .apply(RequestOptions.circleCropTransform())
-//                .into(iv_profile)
-//
-//            btn_simpan.visibility = View.VISIBLE
-//            iv_add.setImageResource(R.drawable.ic_btn_delete)
-//        }
-//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

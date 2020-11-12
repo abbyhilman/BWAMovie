@@ -51,7 +51,13 @@ class SignUpActivity : AppCompatActivity() {
                 et_email.error = "Silahkan isi email anda"
                 et_email.requestFocus()
             } else {
-                saveData (sUsername, sPassword, sNama, sEmail)
+                var statusUsername = sUsername.indexOf(".")
+                if (statusUsername >=0) {
+                    et_username.error = "Silahkan tulis Username Anda tanpa ."
+                    et_username.requestFocus()
+                } else {
+                    saveData(sUsername, sPassword, sNama, sEmail)
+                }
             }
         }
 
@@ -74,17 +80,19 @@ class SignUpActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 val user = dataSnapshot.getValue(User::class.java)
-                if (user == null) {
+                if (user != null) {
                     mDatabaseReference.child(iUsername).setValue(data)
 
                     preferences.setValues("nama", data.nama.toString())
                     preferences.setValues("user", data.username.toString())
+                    preferences.setValues("pass", data.password.toString())
+                    preferences.setValues("saldo", "")
                     preferences.setValues("url", "")
                     preferences.setValues("email", data.email.toString())
                     preferences.setValues("status", "1")
 
                     val intent = Intent(this@SignUpActivity,
-                        SignUpPhotoscreenActivity::class.java).putExtra("nama", data.nama)
+                        SignUpPhotoscreenActivity::class.java).putExtra("data", data)
                     startActivity(intent)
 
                 } else {

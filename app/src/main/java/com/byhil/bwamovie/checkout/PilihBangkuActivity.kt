@@ -37,6 +37,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusA1 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("A1", "70000"))
             } else {
                 a1.setImageResource(R.drawable.ic_rectangle_22)
                 statusA1 = true
@@ -54,6 +56,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusA2 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("A2", "70000"))
             } else {
                 a2.setImageResource(R.drawable.ic_rectangle_22)
                 statusA2 = true
@@ -71,6 +75,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusA3 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("A3", "70000"))
             } else {
                 a3.setImageResource(R.drawable.ic_rectangle_22)
                 statusA3 = true
@@ -88,6 +94,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusA4 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("A4", "70000"))
             } else {
                 a4.setImageResource(R.drawable.ic_rectangle_22)
                 statusA4 = true
@@ -105,6 +113,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusB1 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("B1", "50000"))
             } else {
                 b1.setImageResource(R.drawable.ic_rectangle_22)
                 statusB1 = true
@@ -122,6 +132,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusB2 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("B2", "50000"))
             } else {
                 b2.setImageResource(R.drawable.ic_rectangle_22)
                 statusB2 = true
@@ -139,6 +151,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusB3 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("B3", "50000"))
             } else {
                 b3.setImageResource(R.drawable.ic_rectangle_22)
                 statusB3 = true
@@ -156,6 +170,8 @@ class PilihBangkuActivity : AppCompatActivity() {
                 statusB4 = false
                 total -= 1
                 beliTiket(total)
+
+                dataList.remove(Checkout("B4", "50000"))
             } else {
                 b4.setImageResource(R.drawable.ic_rectangle_22)
                 statusB4 = true

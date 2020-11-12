@@ -2,15 +2,17 @@ package com.byhil.bwamovie.setting
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.byhil.bwamovie.R
 import com.byhil.bwamovie.setting.editprofile.EditProfileActivity
 import com.byhil.bwamovie.setting.wallet.WalletActivity
+import com.byhil.bwamovie.sign.signin.User
 import com.byhil.bwamovie.utils.Preferences
 import kotlinx.android.synthetic.main.fragment_setting.*
 
@@ -23,10 +25,11 @@ import kotlinx.android.synthetic.main.fragment_setting.*
 class SettingFragment : Fragment() {
 
     lateinit var preferences: Preferences
+    //lateinit var user : User
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting, container, false)
@@ -36,6 +39,8 @@ class SettingFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         preferences = Preferences(context!!)
+        val bundle = this.arguments
+        var user = bundle?.getParcelable<User>("data")
 
         tv_nama.setText(preferences.getValues("nama"))
         tv_email.setText(preferences.getValues("email"))
@@ -46,12 +51,16 @@ class SettingFragment : Fragment() {
             .into(iv_profile)
 
         tv_wallet.setOnClickListener {
-            var intent = Intent(context, WalletActivity::class.java)
+            var intent = Intent(context, WalletActivity::class.java).putExtra("data", user)
             startActivity(intent)
         }
         tv_profile.setOnClickListener {
             var intent = Intent(context, EditProfileActivity::class.java)
             startActivity(intent)
+        }
+
+        tv_exit.setOnClickListener {
+
         }
     }
 
