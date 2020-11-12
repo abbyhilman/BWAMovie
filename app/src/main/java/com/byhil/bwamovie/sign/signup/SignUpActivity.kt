@@ -72,6 +72,8 @@ class SignUpActivity : AppCompatActivity() {
         
             if (sUsername != null) {
                 checkingUsername(sUsername, user)
+            } else {
+                Toast.makeText(this@SignUpActivity, "Masukkan Foto", Toast.LENGTH_LONG).show()
             }
     }
 
@@ -80,7 +82,7 @@ class SignUpActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 val user = dataSnapshot.getValue(User::class.java)
-                if (user != null) {
+                if (user == null) {
                     mDatabaseReference.child(iUsername).setValue(data)
 
                     preferences.setValues("nama", data.nama.toString())
